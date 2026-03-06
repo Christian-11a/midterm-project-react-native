@@ -27,7 +27,7 @@ export default StyleSheet.create({
   salaryValue: { color: '#10B981', fontSize: 18, fontWeight: 'bold' },
 
   sectionContainer: { marginBottom: 25 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#FFF', marginBottom: 12 },
+  sectionTitle: { fontSize: 20, fontWeight: 'bold', color: '#FFF', marginBottom: 12 },
   
   tagWrapper: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   tag: { backgroundColor: 'rgba(139, 92, 246, 0.1)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 10 },
@@ -47,7 +47,16 @@ export default StyleSheet.create({
   metaLabel: { color: '#64748B', fontSize: 12 },
   metaVal: { color: '#FFF', fontWeight: 'bold', fontSize: 15 },
 
-  description: { color: '#94A3B8', fontSize: 15, lineHeight: 24 },
+  
+  description: { 
+    color: '#94A3B8', 
+    fontSize: 15, 
+    lineHeight: 26, 
+    letterSpacing: 0.3 
+  },
+  descriptionLight: { 
+    color: '#475569' 
+  },
 
   bottomBar: { 
     position: 'absolute', 

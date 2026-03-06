@@ -15,8 +15,19 @@ const JobDetailsScreen = ({ route, navigation }: RouteParams) => {
   const { job } = route.params;
   const { isDarkMode, appliedHistory } = useJobStore();
 
-  // Check if job exists in applied history
   const isAlreadyApplied = appliedHistory.some((appliedJob: Job) => appliedJob.id === job.id);
+
+  // Helper to clean HTML and force sections (Requirements, Benefits) to new lines
+  const formatDescription = (html: string) => {
+    if (!html) return 'No description provided.';
+    return html
+      .replace(/<h3>/g, '\n\n')        // Add gap before headings
+      .replace(/<\/h3>/g, ':\n')      // Add colon and line break after headings
+      .replace(/<li>/g, '  • ')       // Bullet point indentation
+      .replace(/<\/li>/g, '\n')       // Line break after each bullet
+      .replace(/<[^>]*>?/gm, '')      // Strip all remaining HTML tags
+      .trim();
+  };
 
   const InfoBadge = ({ icon, label, value }: { icon: any, label: string, value: string }) => (
     <View style={[styles.metaItem, !isDarkMode && styles.metaItemLight]}>
@@ -78,13 +89,13 @@ const JobDetailsScreen = ({ route, navigation }: RouteParams) => {
         </View>
 
         <View style={styles.sectionContainer}>
-          <Text style={[styles.sectionTitle, !isDarkMode && styles.textDark]}>Description</Text>
-          <Text style={[styles.description, !isDarkMode && styles.textDark]}>
-            {job.description ? job.description.replace(/<[^>]*>?/gm, '') : 'No description provided.'}
+          <Text style={[styles.sectionTitle, !isDarkMode && styles.textDark]}>Job Details</Text>
+          <Text style={[styles.description, !isDarkMode && styles.descriptionLight]}>
+            {formatDescription(job.description)}
           </Text>
         </View>
 
-        <View style={{ height: 100 }} />
+        <View style={{ height: 120 }} />
       </ScrollView>
 
       <View style={[styles.bottomBar, !isDarkMode && styles.bottomBarLight]}>

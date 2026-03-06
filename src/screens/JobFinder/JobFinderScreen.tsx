@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import { View, TextInput, FlatList, TouchableOpacity } from 'react-native'; // Removed Text if not used elsewhere
+import { Ionicons } from '@expo/vector-icons'; // Import the icon library
 import { useJobStore } from '../../store/useJobStore';
 import { fetchJobs } from '../../api/jobApi';
 import JobCard from '../../components/JobCard/JobCard';
@@ -25,10 +26,20 @@ export default function JobFinderScreen({ navigation }: any) {
           placeholderTextColor={isDarkMode ? "#94A3B8" : "#64748B"}
           onChangeText={setQuery}
         />
-        <TouchableOpacity onPress={toggleAppearance} style={styles.appearanceBtn}>
-          <Text>{isDarkMode ? '🌙' : '☀️'}</Text>
+        
+        {/* Updated Button to use Ionicons */}
+        <TouchableOpacity 
+          onPress={toggleAppearance} 
+          style={[styles.appearanceBtn, !isDarkMode && styles.appearanceBtnLight]}
+        >
+          <Ionicons 
+            name="contrast" 
+            size={22} 
+            color={isDarkMode ? "#FFFFFF" : "#0F172A"} 
+          />
         </TouchableOpacity>
       </View>
+
       <FlatList 
         data={filtered}
         keyExtractor={item => item.id}

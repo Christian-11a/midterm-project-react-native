@@ -17,16 +17,44 @@ const JobDetailsScreen = ({ route, navigation }: RouteParams) => {
 
   const isAlreadyApplied = appliedHistory.some((appliedJob: Job) => appliedJob.id === job.id);
 
-  // Helper to clean HTML and force sections (Requirements, Benefits) to new lines
-  const formatDescription = (html: string) => {
-    if (!html) return 'No description provided.';
-    return html
-      .replace(/<h3>/g, '\n\n')        // Add gap before headings
-      .replace(/<\/h3>/g, ':\n')      // Add colon and line break after headings
-      .replace(/<li>/g, '  • ')       // Bullet point indentation
-      .replace(/<\/li>/g, '\n')       // Line break after each bullet
-      .replace(/<[^>]*>?/gm, '')      // Strip all remaining HTML tags
-      .trim();
+  // Helper to render sections with proper wrapping and bold headers
+  const renderCleanDescription = (html: string) => {
+    // FIXED: Changed styles.description to styles.bulletText
+    if (!html) return <Text style={styles.bulletText}>No description provided.</Text>;
+
+    const sections = html.split(/<h3>(.*?)<\/h3>/g).filter(Boolean);
+    const elements = [];
+
+    for (let i = 0; i < sections.length; i += 2) {
+      const title = sections[i].trim();
+      const content = sections[i + 1] || "";
+
+      // Determine Emoji based on title keywords
+      let emoji = " ";
+      if (title.toLowerCase().includes("requirement")) emoji = " ";
+      if (title.toLowerCase().includes("benefit")) emoji = " ";
+
+      elements.push(
+        <View key={title} style={styles.sectionGap}>
+          <Text style={[styles.boldHeader, !isDarkMode && styles.textDark]}>
+            {emoji}{title}:
+          </Text>
+          {content.split('<li>').map((item, index) => {
+            const cleanItem = item.replace(/<\/?[^>]+(>|$)/g, "").trim();
+            if (!cleanItem) return null;
+            return (
+              <View key={index} style={styles.bulletRow}>
+                <Text style={styles.bulletPoint}>•</Text>
+                <Text style={[styles.bulletText, !isDarkMode && styles.descriptionLight]}>
+                  {cleanItem}
+                </Text>
+              </View>
+            );
+          })}
+        </View>
+      );
+    }
+    return elements;
   };
 
   const InfoBadge = ({ icon, label, value }: { icon: any, label: string, value: string }) => (
@@ -65,19 +93,6 @@ const JobDetailsScreen = ({ route, navigation }: RouteParams) => {
           <Ionicons name="cash-outline" size={28} color="#10B981" />
         </View>
 
-        {job.tags && job.tags.length > 0 && (
-          <View style={styles.sectionContainer}>
-            <Text style={[styles.sectionTitle, !isDarkMode && styles.textDark]}>Skills & Tags</Text>
-            <View style={styles.tagWrapper}>
-              {job.tags.map((tag: string, index: number) => (
-                <View key={index} style={[styles.tag, !isDarkMode && styles.tagLight]}>
-                  <Text style={[styles.tagText, !isDarkMode && styles.tagTextLight]}>{tag}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
-        )}
-
         <View style={styles.sectionContainer}>
           <Text style={[styles.sectionTitle, !isDarkMode && styles.textDark]}>Job Overview</Text>
           <View style={styles.grid}>
@@ -89,10 +104,8 @@ const JobDetailsScreen = ({ route, navigation }: RouteParams) => {
         </View>
 
         <View style={styles.sectionContainer}>
-          <Text style={[styles.sectionTitle, !isDarkMode && styles.textDark]}>Job Details</Text>
-          <Text style={[styles.description, !isDarkMode && styles.descriptionLight]}>
-            {formatDescription(job.description)}
-          </Text>
+          <Text style={[styles.sectionTitle, !isDarkMode && styles.textDark]}>Job Description</Text>
+          {renderCleanDescription(job.description)}
         </View>
 
         <View style={{ height: 120 }} />
@@ -100,10 +113,7 @@ const JobDetailsScreen = ({ route, navigation }: RouteParams) => {
 
       <View style={[styles.bottomBar, !isDarkMode && styles.bottomBarLight]}>
         <Pressable 
-          style={[
-            styles.applyBtn, 
-            isAlreadyApplied && { backgroundColor: '#475569' } 
-          ]} 
+          style={[styles.applyBtn, isAlreadyApplied && { backgroundColor: '#475569' }]} 
           disabled={isAlreadyApplied}
           onPress={() => navigation.navigate('ApplicationForm', { job, fromSaved: false })}
         >

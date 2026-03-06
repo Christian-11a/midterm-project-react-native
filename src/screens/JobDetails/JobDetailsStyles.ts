@@ -26,15 +26,9 @@ export default StyleSheet.create({
   salaryLabel: { color: '#64748B', fontSize: 12, marginBottom: 4 },
   salaryValue: { color: '#10B981', fontSize: 18, fontWeight: 'bold' },
 
-  sectionContainer: { marginBottom: 25 },
-  sectionTitle: { fontSize: 20, fontWeight: 'bold', color: '#FFF', marginBottom: 12 },
+  sectionContainer: { marginBottom: 20 },
+  sectionTitle: { fontSize: 20, fontWeight: 'bold', color: '#FFF', marginBottom: 15 },
   
-  tagWrapper: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  tag: { backgroundColor: 'rgba(139, 92, 246, 0.1)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 10 },
-  tagLight: { backgroundColor: '#EDE9FE' },
-  tagText: { color: '#A78BFA', fontSize: 13, fontWeight: '500' },
-  tagTextLight: { color: '#7C3AED' },
-
   grid: { gap: 12 },
   metaItem: { 
     flexDirection: 'row', 
@@ -47,12 +41,32 @@ export default StyleSheet.create({
   metaLabel: { color: '#64748B', fontSize: 12 },
   metaVal: { color: '#FFF', fontWeight: 'bold', fontSize: 15 },
 
-  
-  description: { 
-    color: '#94A3B8', 
-    fontSize: 15, 
-    lineHeight: 26, 
-    letterSpacing: 0.3 
+  // CLEAN TEXT STYLES
+  sectionGap: {
+    marginBottom: 12,
+  },
+  boldHeader: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FFF',
+    marginBottom: 6,
+  },
+  bulletRow: {
+    flexDirection: 'row',
+    marginBottom: 4,
+    paddingLeft: 4,
+  },
+  bulletPoint: {
+    width: 15,
+    fontSize: 16,
+    color: '#8B5CF6',
+    lineHeight: 22,
+  },
+  bulletText: {
+    flex: 1,
+    color: '#94A3B8',
+    fontSize: 15,
+    lineHeight: 22,
   },
   descriptionLight: { 
     color: '#475569' 

@@ -15,11 +15,10 @@ const AppliedHistoryScreen = () => {
       <FlatList 
         data={appliedHistory}
         keyExtractor={(item: Job) => item.id}
+        // This is the fix for centering: it forces the list to fill the screen when empty
+        contentContainerStyle={appliedHistory.length === 0 ? { flex: 1 } : null}
         renderItem={({ item }: { item: Job }) => (
           <View style={{ marginBottom: 15, opacity: 0.9 }}>
-            {/* We pass an empty function to onPress 
-               so the card UI still looks correct but does nothing.
-            */}
             <JobCard 
               job={item} 
               isSaved={false} 
